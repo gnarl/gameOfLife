@@ -1,21 +1,23 @@
 
-
-
 class Cell
-  attr_accessor :x, :y
-  def initialize(x, y, alive = true)
-    @x = x
-    @y = y
+  attr_accessor :col, :row
+  attr_writer :alive
+
+  def initialize(row, col, alive = true)
+    @row = row 
+    @col = col 
     @alive = alive
-    @state_eval = StateEval.new
   end
 
   def alive?
     @alive
   end
 
-  def change_state?(board)
-    state_eval.change_state?(self, board)
+
+  def name
+    "#{@row}_#{@col}"
   end
+
+
 end
 

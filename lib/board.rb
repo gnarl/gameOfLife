@@ -1,15 +1,13 @@
 
 
 class Board
-  attr_accessor :set
+  attr_reader :current_state, :future_state
 
-  def initialize(set)
-    @set = set
+  def initialize(map)
+    @current_state = map 
+    @future_state = nil
   end
 
-  def tick
-    board.each
-  end
 end
 
 
