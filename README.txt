@@ -1,22 +1,10 @@
+Ruby implementation of Conway's Game of Life
 
+This implementation uses a hash instead of an array to track the state of the board. Only alive cells are ever included in the hash and this appears to greatly simplify the code needed to evaluate if a cell lives or dies in the next generation. 
 
-Writing a program to implement Conway's game of life.
+I currently have the board able to update itself and the cells contain state information. The next steps include seeding the board from a file and drawing the representation of the board.
 
-TODO:
-* Seed Cells to a board as a hash
-* Write Tests
+Drawing the representation of the board will initially just spit out html of each generation of the board.
 
-  Use Rspec
-  StateEval needs to verify if the state of a cell should change.
-  May need to remove alive? from Cell
+Additional information on the game can be found at: http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 
-  Test Board with negative coordinates
-
-Board needs to be able to return a fixed length arrary with the state 
-of all neighbors of a cell.
-
-Each cell needs to be able to read all cells that are one node away. 
-There is no edge to the board so the environment can grow and shrink
-as needed.
-
-If a cell doesn't exist then it is not alive.
