@@ -3,8 +3,8 @@
 Writing a program to implement Conway's game of life.
 
 TODO:
-  Seed Cells to a board as a hash
-  Write Tests
+* Seed Cells to a board as a hash
+* Write Tests
 
   Use Rspec
   StateEval needs to verify if the state of a cell should change.
