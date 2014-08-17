@@ -75,7 +75,7 @@ class BoardTest < Test::Unit::TestCase
     cut = Board.new(@map_one)
     cut.display
 
-    cut.update_board
+    cut.regenerate
     cut.display
   end
 

@@ -1,8 +1,10 @@
 require_relative 'cell'
 require_relative 'state_eval'
+require_relative 'cell_output'
 
 class Board
   include StateEval 
+  include CellOutput
 
   attr_reader :current_state, :future_state, :dead_neighbors
 
@@ -10,6 +12,7 @@ class Board
     @current_state = map 
     @future_state = {}
     @dead_neighbors = []
+    @finished = false
   end
 
   #assumes @future_state is always properly initialized
@@ -17,15 +20,18 @@ class Board
     @future_state[cell.name] = cell 
   end
 
-  #TODO rename
-  def update_board
-
+  def finished?
+    @finished
+  end
+  
+  def regenerate 
     update_future_state
 
     reset_neighbor_counts
-    @dead_neighbors = []
-
+    @finished = true if @future_state == @current_state
     @current_state = @future_state
+
+    @dead_neighbors = []
     @future_state = {}
   end
 
@@ -33,64 +39,7 @@ class Board
     @current_state.empty?
   end
 
-  def display
-    puts "\n" 
-    display = @current_state.values.sort
 
-    left_max_col = nil 
-    right_max_col = nil
-    display.each do |x|
-      if left_max_col.nil?  
-        left_max_col = x.col 
-      elsif x.col < left_max_col
-        left_max_col = x.col 
-      end
-
-      if right_max_col.nil? 
-        right_max_col = x.col 
-      elsif x.col > right_max_col 
-        right_max_col = x.col 
-      end
-    end
-
-    current_row = display[0].row
-    current_col = left_max_col 
-
-    display.each do |x|
-
-      while x.row > current_row 
-        while current_col <= right_max_col do
-          print "____|"
-          current_col = current_col + 1
-        end
-        puts "\n" 
-        current_row = current_row + 1 
-        current_col = left_max_col
-      end
-      
-      print_column(x.row, x.col, current_col)
-      current_col = x.col + 1 
-    end
-
-    #DRY
-    while current_col <= right_max_col do
-      print "____|"
-      current_col = current_col + 1
-    end
-    puts "\n" 
-
-  end
-
-  def print_column(row, col, current_col)
-
-    while current_col < col do
-      print "____|"
-      current_col = current_col + 1
-    end
-    print "#{row}_#{col}|".rjust(5, '_')
-    #puts current_col
- 
-  end
   
   def update_future_state
     @current_state.each do |key, cell|
@@ -127,8 +76,6 @@ class Board
     end
   end
 
-
-
   def look_at_neighbors(cell) 
 
     # inc num_alive neighbors
@@ -146,8 +93,12 @@ class Board
     end
   end
 
-  private 
+  def display
+    cli_out(@current_state.values.sort)
+  end
 
+
+  private 
   def get_row_col(cell_name)
       row, col = cell_name.split('_') 
       return row.to_i, col.to_i
