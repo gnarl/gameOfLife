@@ -63,11 +63,20 @@ class BoardTest < Test::Unit::TestCase
   end
 
   def test_update_future_state
+    
+    next_gen = ["0_0", "0_1", "0_2", "2_2", "3_-1", "3_2", "4_0"] 
     cut = Board.new(@map_one)
 
     cut.update_future_state
+    assert_equal(next_gen, cut.future_state.keys.sort)
+  end
 
+  def test_display_board
+    cut = Board.new(@map_one)
+    cut.display_board
 
+    cut.update_board
+    cut.display_board
   end
 
 end

@@ -1,6 +1,5 @@
 require 'awesome_print'
-require 'state_eval'
-require 'cell'
+require_relative 'board'
 
 #TODO
 # Determine if neighbors reproduce

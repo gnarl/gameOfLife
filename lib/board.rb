@@ -37,24 +37,87 @@ class Board
   #
 
   def update_board
+
     update_future_state
+
+    reset_neighbor_counts
     @dead_neighbors = []
+
     @current_state = @future_state
     @future_state = {}
   end
+
+  def display_board
+    puts "\n" 
+    display = @current_state.keys.sort
+
+    left_max_col = nil 
+    right_max_col = nil
+    display.each do |x|
+      row, col = get_row_col(x)
+      if left_max_col.nil?  
+        left_max_col = col.to_i
+      elsif col.to_i < left_max_col
+        left_max_col = col.to_i
+      end
+
+      if right_max_col.nil? 
+        right_max_col = col.to_i
+      elsif col.to_i > right_max_col 
+        right_max_col = col.to_i
+      end
+    end
+
+    current_row = display[0].split('_')[0].to_i
+    current_col = left_max_col 
+
+    display.each do |x|
+      row, col = get_row_col(x)
+
+      if row > current_row 
+        while current_col <= right_max_col do
+          print "____|"
+          current_col = current_col + 1
+        end
+        puts "\n" 
+        current_row = row
+        current_col = left_max_col
+      end
+      
+      print_column(row, col, current_col)
+      current_col = col + 1 
+    end
+
+    #DRY
+    while current_col <= right_max_col do
+      print "____|"
+      current_col = current_col + 1
+    end
+    puts "\n" 
+
+  end
+
+  def print_column(row, col, current_col)
+
+    while current_col < col do
+      print "____|"
+      current_col = current_col + 1
+    end
+    print "#{row}_#{col}|".rjust(5, '_')
+    #puts current_col
+ 
+  end
   
   def update_future_state
-
     @current_state.each do |key, cell|
       look_at_neighbors(cell)
       future_state[key] = cell if stays_alive?(cell)
     end
 
     process_dead_neighbors
-    reset_neighbor_counts
   end
 
-  #depends on look_at_neighbors being called
+  #dependency on calling look_at_neighbors first
   def process_dead_neighbors
 
     @dead_neighbors.each do |dn|
@@ -80,6 +143,8 @@ class Board
     end
   end
 
+
+
   def look_at_neighbors(cell) 
 
     # inc num_alive neighbors
@@ -97,6 +162,12 @@ class Board
     end
   end
 
+  private 
+
+  def get_row_col(cell_name)
+      row, col = cell_name.split('_') 
+      return row.to_i, col.to_i
+  end
 
 end
 
