@@ -17,25 +17,7 @@ class Board
     @future_state[cell.name] = cell 
   end
 
-  #  Any live cell with fewer than two live neighbours dies, as if caused by under-population.
-  #  Any live cell with two or three live neighbours lives on to the next generation.
-  #  Any live cell with more than three live neighbours dies, as if by overcrowding.
-  #  Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
-  
-  #Dead cell reproduction
-  # N N N N N
-  # N L D L N
-  # N N L N N
-  #
-  # N N L L N
-  # N N D L N
-  # N N N N N
-  #d
-  # N N N L N
-  # N L D L N
-  # N N N N N
-  #
-
+  #TODO rename
   def update_board
 
     update_future_state
@@ -47,45 +29,47 @@ class Board
     @future_state = {}
   end
 
-  def display_board
+  def empty?
+    @current_state.empty?
+  end
+
+  def display
     puts "\n" 
-    display = @current_state.keys.sort
+    display = @current_state.values.sort
 
     left_max_col = nil 
     right_max_col = nil
     display.each do |x|
-      row, col = get_row_col(x)
       if left_max_col.nil?  
-        left_max_col = col.to_i
-      elsif col.to_i < left_max_col
-        left_max_col = col.to_i
+        left_max_col = x.col 
+      elsif x.col < left_max_col
+        left_max_col = x.col 
       end
 
       if right_max_col.nil? 
-        right_max_col = col.to_i
-      elsif col.to_i > right_max_col 
-        right_max_col = col.to_i
+        right_max_col = x.col 
+      elsif x.col > right_max_col 
+        right_max_col = x.col 
       end
     end
 
-    current_row = display[0].split('_')[0].to_i
+    current_row = display[0].row
     current_col = left_max_col 
 
     display.each do |x|
-      row, col = get_row_col(x)
 
-      if row > current_row 
+      while x.row > current_row 
         while current_col <= right_max_col do
           print "____|"
           current_col = current_col + 1
         end
         puts "\n" 
-        current_row = row
+        current_row = current_row + 1 
         current_col = left_max_col
       end
       
-      print_column(row, col, current_col)
-      current_col = col + 1 
+      print_column(x.row, x.col, current_col)
+      current_col = x.col + 1 
     end
 
     #DRY

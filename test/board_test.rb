@@ -73,10 +73,10 @@ class BoardTest < Test::Unit::TestCase
 
   def test_display_board
     cut = Board.new(@map_one)
-    cut.display_board
+    cut.display
 
     cut.update_board
-    cut.display_board
+    cut.display
   end
 
 end

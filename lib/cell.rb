@@ -4,6 +4,8 @@
 # The cell knows if it is alive or dead.
 # The cell can be told how many alive neighbors it has.
 class Cell
+  include Comparable
+
   attr_accessor :col, :row, :alive_neighbors
   attr_writer :alive
 
@@ -47,10 +49,26 @@ class Cell
     @alive_neighbors = 0
   end
 
+  def <=> other 
+    if row < other.row
+      -1
+    elsif row > other.row
+      1
+    elsif col < other.col
+      -1
+    elsif col > other.col
+      1
+    else
+      0
+    end
+  end
+
   private
   def create_name(row, col)
     "#{row}_#{col}"
   end
+
+  
 
 end
 

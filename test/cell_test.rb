@@ -59,6 +59,18 @@ class CellTest < Test::Unit::TestCase
     @cell01.reset_alive_neighbors
     assert_equal(0, @cell01.alive_neighbors)
   end
+
+  def test_comparable
+    #test column equality
+    assert(@cell01 < @cell02)
+    t_cell02 = Cell.new(@cell02.row, @cell02.col)
+    assert_equal(t_cell02, @cell02)
+
+    #test row equality
+    t_cell45 = Cell.new(4, 5)
+    assert(t_cell45 > t_cell02)
+
+  end
   
 
 end

@@ -1,6 +1,5 @@
 require 'awesome_print'
-require 'cell'
-
+require_relative 'cell'
 
 module StateEval 
 
