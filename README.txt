@@ -6,3 +6,7 @@ To play the game simply run conway.rb and specify a path to your seed file.
 
 Additional information on the game can be found at: http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 
+TODO:
+ Add ability to stop game when board starts iterating between just two states.
+ Gracefully exit when all cells are dead.
+
